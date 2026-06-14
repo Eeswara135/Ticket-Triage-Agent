@@ -2,12 +2,12 @@ AI Ticket Triage Agent
 
 Team Members
 
-| Roll No | Student Name | Branch |
-|----------|--------------|---------|
-| 23U41A4433 | PURRI PREETHI SREE VARSHA | CSD |
-| 23U41A0559 | VUGGINA SRI SAI MANASA | CSE |
+| Roll No | Student Name | Department |
+|----------|--------------|------------|
 | 23U41A0553 | SENNAMSETTI ESWARA RAO | CSE |
+| 23U41A0559 | VUGGINA SRI SAI MANASA | CSE|
 | 23U41A0448 | PILLA PRUDHVI SAI MANIKANTA | ECE |
+| 23U41A4433 | PURRI PREETHI SREE VARSHA | CSD |
 
 ---
 
