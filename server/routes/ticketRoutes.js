@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-
+const path = require("path");
 const router = express.Router();
 
 const {
@@ -27,6 +27,21 @@ storage: storage
 router.post(
 "/analyze",
 runAnalysis
+);
+router.get(
+"/download",
+(req, res) => {
+
+
+const filePath = path.join(
+  __dirname,
+  "../../output/results.csv"
+);
+
+res.download(filePath);
+
+
+}
 );
 
 router.post(
