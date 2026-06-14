@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./App.css";
 
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  "https://ticket-triage-agent-xxzk.onrender.com";
+
 function App() {
   const [tickets, setTickets] = useState([]);
   const [title, setTitle] = useState("");
@@ -22,12 +26,15 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/tickets/analyze", {
+      const response = await fetch(`${API_BASE}/tickets/analyze`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description }),
+        body: JSON.stringify({
+          title,
+          description,
+        }),
       });
 
       if (!response.ok) {
@@ -35,35 +42,41 @@ function App() {
       }
 
       const data = await response.json();
-      const parsed = JSON.parse(data.output);
-      setTickets(parsed);
+
+      if (Array.isArray(data)) {
+        setTickets(data);
+      } else if (data.output) {
+        const parsed = JSON.parse(data.output);
+        setTickets(Array.isArray(parsed) ? parsed : [parsed]);
+      } else {
+        setTickets([data]);
+      }
     } catch (err) {
-      setError("Couldn't analyze this ticket. Check that the API is running and try again.");
+      console.error("Analysis Error:", err);
+      setError(
+        "Couldn't analyze this ticket. Check that the API is running and try again."
+      );
     } finally {
       setLoading(false);
     }
   };
-const downloadCSV = () => {
-window.open(
-"http://localhost:5000/tickets/download",
-"_blank"
-);
-};
+
+  const downloadCSV = () => {
+    window.open(`${API_BASE}/tickets/download`, "_blank");
+  };
 
   return (
     <div className="app">
       <div className="container">
-        {/* Header */}
         <div className="header">
           <span className="eyebrow">Support Operations</span>
           <h1>AI Ticket Triage Agent</h1>
           <p>
-            Drop in a ticket and the model sorts category, priority, and
-            reasoning so your queue triages itself.
+            Drop in a ticket and the model sorts category, priority,
+            and reasoning automatically.
           </p>
         </div>
 
-        {/* Stats */}
         <div className="stats">
           <div className="stat-card">
             <h3>Total Tickets</h3>
@@ -81,33 +94,35 @@ window.open(
           </div>
         </div>
 
-        {/* Form */}
         <div className="form-card">
-          <label className="field-label" htmlFor="ticket-title">
+          <label className="field-label">
             Ticket title
           </label>
+
           <input
-            id="ticket-title"
             type="text"
             className="input"
-            placeholder="e.g. Customer can't reset their password"
+            placeholder="Enter ticket title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <label className="field-label" htmlFor="ticket-description">
+          <label className="field-label">
             Description
           </label>
+
           <textarea
-            id="ticket-description"
             className="input"
-            placeholder="Paste the full ticket details here..."
+            placeholder="Enter ticket description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
 
           <div className="upload-row">
-            <span className="file-label">Bulk import (CSV)</span>
+            <span className="file-label">
+              Bulk import (CSV)
+            </span>
+
             <input
               type="file"
               accept=".csv"
@@ -116,45 +131,86 @@ window.open(
             />
           </div>
 
-          {error && <div className="error-message">{error}</div>}
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
 
-          <button className="analyze-btn" onClick={runAnalysis} disabled={loading}>
-            {loading && <span className="spinner" />}
-            {loading ? "Analyzing..." : "Analyze ticket"}
-          </button>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginTop: "15px",
+            }}
+          >
+            <button
+              className="analyze-btn"
+              onClick={runAnalysis}
+              disabled={loading}
+            >
+              {loading ? "Analyzing..." : "Analyze ticket"}
+            </button>
+
+            <button
+              className="analyze-btn"
+              onClick={downloadCSV}
+            >
+              Download CSV
+            </button>
+          </div>
         </div>
 
-        {/* Results */}
         <div className="results">
           {tickets.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">◎</div>
               <h3>No tickets triaged yet</h3>
-              <p>Run an analysis above to see category, priority, and reasoning here.</p>
+              <p>
+                Run an analysis above to see category,
+                priority, and reasoning here.
+              </p>
             </div>
           ) : (
             tickets.map((ticket, index) => {
-              const priorityKey = (ticket.priority || "").toLowerCase();
+              const priorityKey = (
+                ticket.priority || ""
+              ).toLowerCase();
+
               return (
                 <div
                   key={ticket.id ?? index}
                   className={`ticket-card priority-border-${priorityKey}`}
                 >
-                  <h3 className="ticket-title">{ticket.title}</h3>
+                  <h3 className="ticket-title">
+                    {ticket.title || title}
+                  </h3>
 
                   <div className="ticket-meta">
-                    <span className="meta-label">Category</span>
-                    <span className="badge category">{ticket.category}</span>
+                    <span className="meta-label">
+                      Category
+                    </span>
 
-                    <span className="meta-label">Priority</span>
-                    <span className={`badge priority-${priorityKey}`}>
+                    <span className="badge category">
+                      {ticket.category}
+                    </span>
+
+                    <span className="meta-label">
+                      Priority
+                    </span>
+
+                    <span
+                      className={`badge priority-${priorityKey}`}
+                    >
                       {ticket.priority}
                     </span>
                   </div>
 
                   <p className="ticket-reason">
-                    <strong>Reason</strong>
-                    {ticket.reason}
+                    <strong>Reason:</strong>{" "}
+                    {ticket.reason ||
+                      ticket.reasoning ||
+                      "No reason provided"}
                   </p>
                 </div>
               );
