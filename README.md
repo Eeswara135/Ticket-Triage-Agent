@@ -220,7 +220,11 @@ Features
  Project Links
 
 GitHub Repository
+
 https://github.com/Eeswara135/Ticket-Triage-Agent.git
+
 Live Demo
+
 https://ticket-triage-agent-gules.vercel.app/
+
 Demo Video
