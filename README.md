@@ -220,7 +220,7 @@ Features
  Project Links
 
 GitHub Repository
- Frontend (Vercel)
-[Open Frontend](https://ticket-triage-agent-gules.vercel.app/)
- Backend API (Render)
-[Open Backend](https://ticket-triage-agent.onrender.com/health)
+https://github.com/Eeswara135/Ticket-Triage-Agent.git
+Live Demo
+https://ticket-triage-agent-gules.vercel.app/
+Demo Video
