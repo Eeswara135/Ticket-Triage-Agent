@@ -1,7 +1,9 @@
 import json
 import os
 import sqlite3
-
+import pandas as pd
+import google.generativeai as genai
+from dotenv import load_dotenv
 import pandas as pd
 
 from agent import classify_ticket
