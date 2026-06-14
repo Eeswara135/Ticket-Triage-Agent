@@ -43,6 +43,12 @@ function App() {
       setLoading(false);
     }
   };
+const downloadCSV = () => {
+window.open(
+"http://localhost:5000/tickets/download",
+"_blank"
+);
+};
 
   return (
     <div className="app">
