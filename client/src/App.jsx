@@ -79,7 +79,7 @@ function App() {
 
         <div className="stats">
           <div className="stat-card">
-            <h3>Total Tickets</h3>
+            <h3>Analyzed Tickets</h3>
             <h2>{tickets.length}</h2>
           </div>
 
