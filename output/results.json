@@ -1,6 +1,6 @@
 [
   {
-    "id":1
+    "id":1,
     "title": "Bank issue",
     "category": "Transaction blocked",
     "priority": "P3",
