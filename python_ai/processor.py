@@ -109,6 +109,7 @@ for row in results:
             row["reason"]
         )
     )
+    ticket_id=cursor.lastrowid
 
 conn.commit()
 conn.close()
