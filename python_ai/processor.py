@@ -26,7 +26,6 @@ for ticket in tickets:
     result = classify_ticket(ticket)
 
     results.append({
-        "id":ticket_id,
         "title": ticket["title"],
         "category": result["category"],
         "priority": result["priority"],
@@ -109,7 +108,7 @@ for row in results:
             row["reason"]
         )
     )
-    ticket_id=cursor.lastrowid
+    row["id"]=cursor.lastrowid
 
 conn.commit()
 conn.close()
