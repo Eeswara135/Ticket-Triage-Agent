@@ -26,6 +26,7 @@ for ticket in tickets:
     result = classify_ticket(ticket)
 
     results.append({
+        "id":ticket_id,
         "title": ticket["title"],
         "category": result["category"],
         "priority": result["priority"],
