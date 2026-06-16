@@ -1,4 +1,5 @@
-id,title,category,priority,reason
-1,uday,Other,P3,General support request
-deepak,Other,P3,General support request
-mani,Other,P3,General support request
+title,category,priority,reason
+Eswar,Login Issue,P3,User unable to login after password reset
+Manasa,Payment Failure,P1,Critical Payment Transaction failure affecting user
+Prudhvi,Dark Mode Request,P4,User requested dark mode feature enhancement
+Preethi,Dashboard Error,P2,Dashboard page throws error while loading reports
